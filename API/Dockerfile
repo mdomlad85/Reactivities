@@ -1,4 +1,5 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
+
 WORKDIR /src
 
 # copy all the layers' csproj files into respective folders
@@ -19,4 +20,4 @@ RUN dotnet build -c Debug
 EXPOSE 5000
 EXPOSE 5001
 
-ENTRYPOINT ["dotnet", "run", "-c", "Debug", "--urls", "http://+:5000;https://+:5001"]
+ENTRYPOINT ["dotnet", "run", "-c", "Debug", "--no-build"]
