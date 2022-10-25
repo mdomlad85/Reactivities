@@ -45,15 +45,16 @@ public class AccountController : ControllerBase
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     {
-        var badRequestMsg = "Username or email is already taken!"; 
         if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
         {
-            return BadRequest(badRequestMsg);
+            ModelState.AddModelError("email", "Email is already taken!");
+            return ValidationProblem(ModelState);
         }
         
         if (await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
         {
-            return BadRequest(badRequestMsg);
+            ModelState.AddModelError("username", "Username is already taken!");
+            return ValidationProblem(ModelState);
         }
         
         var user = new AppUser
@@ -69,7 +70,7 @@ public class AccountController : ControllerBase
         {
             return CreateUserObject(user);
         }
-        return BadRequest("Problem registering user!");
+        return ValidationProblem("Problem registering user!");
     }
     
     [Authorize]
