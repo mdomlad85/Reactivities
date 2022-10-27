@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
 WORKDIR /src
 
@@ -9,13 +9,13 @@ COPY ./Persistence/Persistence.csproj src/Persistence/
 COPY ./Application/Application.csproj src/Application/
 
 # run restore over API project - this pulls restore over the dependent projects as well
-RUN dotnet restore "src/API/API.csproj"
+RUN dotnet restore "src/API/API.csproj" --use-current-runtime  
 
 COPY . .
 
 # run build over the API project
 WORKDIR /src/API/
-RUN dotnet build -c Debug
+RUN dotnet build -c Debug --use-current-runtime --self-contained false
 
 EXPOSE 5000
 EXPOSE 5001

@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Application.Activities;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -22,11 +23,12 @@ public class ActivitiesController : BaseApiController
     }
     
     [HttpPost]
-    public async Task<ActionResult> CreateActivity(Activity activity)
+    public async Task<IActionResult> CreateActivity(Activity activity)
     {
         return HandleResult(await Mediator.Send(new Create.Command { Activity = activity }));
     }
     
+    [Authorize(Policy = "IsActivityHost")]
     [HttpPut("{id}")]
     public async Task<ActionResult> EditActivity(Guid id, Activity activity)
     {
@@ -34,9 +36,16 @@ public class ActivitiesController : BaseApiController
         return HandleResult(await Mediator.Send(new Edit.Command { Activity = activity }));
     }
     
+    [Authorize(Policy = "IsActivityHost")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteActivity(Guid id)
     {
         return HandleResult(await Mediator.Send(new Delete.Command { Id = id }));
+    }
+    
+    [HttpPost("{id}/attend")]
+    public async Task<ActionResult> Attend(Guid id)
+    {
+        return HandleResult(await Mediator.Send(new UpdateAttendance.Command { Id = id }));
     }
 }
