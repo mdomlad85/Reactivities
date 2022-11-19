@@ -1,7 +1,7 @@
 import React, {SyntheticEvent, useState} from "react";
 import {Photo, Profile} from "../../app/models/profile";
 import {observer} from "mobx-react-lite";
-import {Button, Card, Grid, Header, Icon, Image, Tab} from "semantic-ui-react";
+import {Button, Card, Grid, Header, Image, Tab} from "semantic-ui-react";
 import {useStore} from "../../app/stores/store";
 import PhotoUploadWidget from "../../app/common/imageUpload/PhotoUploadWidget";
 
