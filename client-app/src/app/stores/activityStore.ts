@@ -95,9 +95,9 @@ export default class ActivityStore {
                 this.setActivity(activity);
             })
             this.setPagination(result.pagination);
-            this.setLoadingInitial(false);
         } catch (error) {
             console.log(error);
+        } finally {
             this.setLoadingInitial(false);
         }
     }

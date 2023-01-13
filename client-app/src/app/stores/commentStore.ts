@@ -28,7 +28,7 @@ export default class CommentStore {
                 runInAction(() => {
                     comments.forEach(comment => {
                         comment.createdAt = new Date(comment.createdAt);
-                    })
+                    });
                     this.comments = comments
                 });
             })
